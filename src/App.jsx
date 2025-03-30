@@ -50,11 +50,11 @@ export default function InvoiceGenerator() {
         <img src="logo.png" alt="LS Prestige" style={{ width: "400px", marginBottom: "20px" }} />
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
           <div style={{ width: "48%", textAlign: "left" }}>
-            <div style={{ fontWeight: "bold", color: "gray" }}>Adresse</div>
+            <div style={{ fontWeight: "bold", color: "gray" }}>ADRESSE</div>
             <textarea
               placeholder="Adresse"
               value={adresse}
-              style={{ width: "100%", padding: "10px", marginBottom: "10px", border: "1px solid #ccc", minHeight: "60px" }}
+              style={{ width: "100%", padding: "10px", marginBottom: "10px", border: "1px solid #ccc", minHeight: "60px", fontWeight: "bold" }}
               className="no-print"
             />
             <div className="print-only" style={{ display: 'none', whiteSpace: 'pre-line', textAlign: 'left' }}>
@@ -62,12 +62,12 @@ export default function InvoiceGenerator() {
             </div>
           </div>
           <div style={{ width: "48%", textAlign: "right" }}>
-            <div style={{ fontWeight: "bold", color: "gray" }}>Date</div>
+            <div style={{ fontWeight: "bold", color: "gray" }}>DATE</div>
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              style={{ width: "100%", padding: "10px", marginBottom: "10px", border: "1px solid #ccc" }}
+              style={{ width: "100%", padding: "10px", marginBottom: "10px", border: "1px solid #ccc", fontWeight: "bold" }}
               className="no-print"
             />
             <div className="print-only" style={{ display: 'none', textAlign: 'right' }}>
