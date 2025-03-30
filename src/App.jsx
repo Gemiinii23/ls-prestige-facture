@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import html2pdf from "html2pdf.js";
 
+var webhookUrl = "https://discord.com/api/webhooks/1354591573119340554/8KRhxHv89FES8tZXhGhGOtkC2c-Tl7zntoWYMjO70e4FpRyujUb4CsC5ruUJkKCC2MRx";  
+
 export default function InvoiceGenerator() {
   const [services, setServices] = useState([
     { description: "", quantite: 1, prix: 0 }
@@ -37,10 +39,30 @@ export default function InvoiceGenerator() {
 
     html2pdf()
       .from(invoiceRef.current)
-      .save("facture.pdf")
-      .then(() => {
-        noPrintElements.forEach((el) => (el.style.display = ""));
-        printOnlyElements.forEach((el) => (el.style.display = "none"));
+      .outputPdf("blob")
+      .then((pdfBlob) => {
+      const formData = new FormData();
+      formData.append("file", pdfBlob, "facture.pdf");
+
+      fetch(webhookUrl, {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => {
+        if (response.ok) {
+          alert("Facture envoyée avec succès !");
+        } else {
+          alert("Erreur lors de l'envoi de la facture.");
+        }
+        })
+        .catch((error) => {
+        console.error("Erreur:", error);
+        alert("Erreur lors de l'envoi de la facture.");
+        });
+      })
+      .finally(() => {
+      noPrintElements.forEach((el) => (el.style.display = ""));
+      printOnlyElements.forEach((el) => (el.style.display = "none"));
       });
   };
 
