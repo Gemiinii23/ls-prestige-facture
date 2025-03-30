@@ -1,0 +1,15 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f6f6f6;
+}
+input, button {
+  font-family: inherit;
+}
+table {
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid #ccc;
+}
