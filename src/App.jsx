@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import html2pdf from "html2pdf.js";
+import html2png from "html2png.js";
 
 var webhookUrl = "https://discord.com/api/webhooks/1354591573119340554/8KRhxHv89FES8tZXhGhGOtkC2c-Tl7zntoWYMjO70e4FpRyujUb4CsC5ruUJkKCC2MRx";  
 
@@ -37,12 +37,12 @@ export default function InvoiceGenerator() {
     const printOnlyElements = document.querySelectorAll(".print-only");
     printOnlyElements.forEach((el) => (el.style.display = "block"));
 
-    html2pdf()
+    html2png()
       .from(invoiceRef.current)
-      .outputPdf("blob")
-      .then((pdfBlob) => {
+      .outputImg("blob")
+      .then((imgBlob) => {
       const formData = new FormData();
-      formData.append("file", pdfBlob, "facture.pdf");
+      formData.append("file", imgBlob, "facture.png");
 
       fetch(webhookUrl, {
         method: "POST",
