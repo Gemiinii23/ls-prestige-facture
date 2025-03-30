@@ -37,12 +37,12 @@ export default function InvoiceGenerator() {
     const printOnlyElements = document.querySelectorAll(".print-only");
     printOnlyElements.forEach((el) => (el.style.display = "block"));
 
-    html2pdf()
+    html2png()
       .from(invoiceRef.current)
-      .outputPdf("blob")
-      .then((pdfBlob) => {
+      .outputPng("blob")
+      .then((pngBlob) => {
       const formData = new FormData();
-      formData.append("file", pdfBlob, "facture.pdf");
+      formData.append("file", pngBlob, "facture.png");
 
       fetch(webhookUrl, {
         method: "POST",
