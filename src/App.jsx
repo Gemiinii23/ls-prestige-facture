@@ -54,7 +54,6 @@ export default function InvoiceGenerator() {
             <textarea
               placeholder="Adresse"
               value={adresse}
-              onChange={(e) => setAdresse(e.target.value)}
               style={{ width: "100%", padding: "10px", marginBottom: "10px", border: "1px solid #ccc", minHeight: "60px" }}
               className="no-print"
             />
