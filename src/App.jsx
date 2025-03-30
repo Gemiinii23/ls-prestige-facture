@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import html2pdf from "html2pdf.js";
 
-var webhookUrl = "https://discord.com/api/webhooks/1354591573119340554/8KRhxHv89FES8tZXhGhGOtkC2c-Tl7zntoWYMjO70e4FpRyujUb4CsC5ruUJkKCC2MRx";  
+var webhookUrl = "https://discord.com/api/webhooks/1355972788715782274/MWyiLwpsntWzRgc2P3Ulgt8LCDm1Kxpeu3hQdX4S4vcOuDr78Gj5gSUXT_VYR2a3OSdX";  
 
 export default function InvoiceGenerator() {
   const [services, setServices] = useState([
