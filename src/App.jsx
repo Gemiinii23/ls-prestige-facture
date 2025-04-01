@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import html2pdf from "html2pdf.js";
+require('dotenv').config(); 
 
-var webhookUrl = "https://discord.com/api/webhooks/1355972788715782274/MWyiLwpsntWzRgc2P3Ulgt8LCDm1Kxpeu3hQdX4S4vcOuDr78Gj5gSUXT_VYR2a3OSdX";  
+const webhookUrl = process.env.WEBHOOK_URL;
 
 export default function InvoiceGenerator() {
   const [services, setServices] = useState([
