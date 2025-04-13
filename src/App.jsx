@@ -41,22 +41,21 @@ export default function InvoiceGenerator() {
       .then((pdfBlob) => {
         // Log the type of pdfBlob
         console.log('PDF Blob:', pdfBlob);
-        
-        // Check if pdfBlob is indeed a Blob
+  
+        // Ensure it's a Blob
         if (pdfBlob instanceof Blob) {
           console.log("Successfully received a Blob!");
-  
-          // Check the size and type of the Blob
-          console.log("Blob type:", pdfBlob.type);
-          console.log("Blob size:", pdfBlob.size);
-  
-          // Proceed with appending to FormData
+          
+          // Manually set the type and content-disposition (optional)
           const formData = new FormData();
           formData.append("file", pdfBlob, "facture.pdf");
   
           fetch('/api/send-to-discord', {
             method: 'POST',
             body: formData,
+            headers: {
+              'Content-Type': 'multipart/form-data', // Explicit content type for form data
+            }
           })
             .then((res) => {
               if (res.ok) {
@@ -79,6 +78,7 @@ export default function InvoiceGenerator() {
         printOnlyElements.forEach((el) => (el.style.display = "none"));
       });
   };
+  
   
   
   
