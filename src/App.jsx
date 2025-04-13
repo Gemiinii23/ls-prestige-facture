@@ -30,39 +30,45 @@ export default function InvoiceGenerator() {
   const total = services.reduce((sum, item) => sum + item.quantite * item.prix, 0);
 
   const generatePDF = () => {
+    // Hide elements that shouldn't be printed
     const noPrintElements = document.querySelectorAll(".no-print");
     noPrintElements.forEach((el) => (el.style.display = "none"));
     const printOnlyElements = document.querySelectorAll(".print-only");
     printOnlyElements.forEach((el) => (el.style.display = "block"));
-
+  
+    // Generate PDF using html2pdf
     html2pdf()
       .from(invoiceRef.current)
       .outputPdf("blob")
       .then((pdfBlob) => {
-      const formData = new FormData();
-      formData.append("file", pdfBlob, "facture.pdf");
-
-      fetch('/api/send-to-discord', {
-        method: 'POST',
-        body: formData,
-      })
-        .then((res) => {
-          if (res.ok) {
-            alert('✅ Facture envoyée à Discord avec succès !');
-          } else {
-            alert('❌ Échec de l\'envoi vers Discord.');
-          }
+        // Create a FormData object
+        const formData = new FormData();
+        formData.append("file", pdfBlob, "facture.pdf"); // Append the Blob as file
+        
+        // Send the PDF to Discord
+        fetch('/api/send-to-discord', {
+          method: 'POST',
+          body: formData,
         })
-        .catch((err) => {
-          console.error('Erreur:', err);
-          alert('❌ Une erreur est survenue.');
-        });
+          .then((res) => {
+            if (res.ok) {
+              alert('✅ Facture envoyée à Discord avec succès !');
+            } else {
+              alert('❌ Échec de l\'envoi vers Discord.');
+            }
+          })
+          .catch((err) => {
+            console.error('Erreur:', err);
+            alert('❌ Une erreur est survenue.');
+          });
       })
       .finally(() => {
-      noPrintElements.forEach((el) => (el.style.display = ""));
-      printOnlyElements.forEach((el) => (el.style.display = "none"));
+        // Restore the visibility of elements after the PDF generation
+        noPrintElements.forEach((el) => (el.style.display = ""));
+        printOnlyElements.forEach((el) => (el.style.display = "none"));
       });
   };
+  
 
   return (
     <div style={{ padding: "20px", maxWidth: "800px", margin: "auto", backgroundColor: "white", border: "0px solid #ddd", boxShadow: "0px 4px 10px rgba(0,0,0,0.1)", borderRadius: "10px", textAlign: "center"}}>
