@@ -45,4 +45,10 @@ export default async function handler(req, res) {
         throw new Error(`Discord responded with ${response.status}`);
       }
 
-      res.status(200).json({ success
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.error('Sending to Discord failed:', error);
+      res.status(500).send('Failed to send to Discord');
+    }
+  });
+}
