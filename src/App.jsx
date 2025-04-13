@@ -30,26 +30,26 @@ export default function InvoiceGenerator() {
   const total = services.reduce((sum, item) => sum + item.quantite * item.prix, 0);
 
   const generatePDF = () => {
-    // Hide elements that shouldn't be printed
     const noPrintElements = document.querySelectorAll(".no-print");
     noPrintElements.forEach((el) => (el.style.display = "none"));
     const printOnlyElements = document.querySelectorAll(".print-only");
     printOnlyElements.forEach((el) => (el.style.display = "block"));
   
-    // Generate PDF using html2pdf
     html2pdf()
       .from(invoiceRef.current)
       .outputPdf("blob")
       .then((pdfBlob) => {
-        // Create a FormData object
-        const formData = new FormData();
-        formData.append("file", pdfBlob, "facture.pdf"); // Append the Blob as file
-        
-        // Send the PDF to Discord
-        fetch('/api/send-to-discord', {
-          method: 'POST',
-          body: formData,
-        })
+        // Check if pdfBlob is a valid Blob
+        if (pdfBlob instanceof Blob) {
+          // Ensure we have a valid Blob before appending
+          const formData = new FormData();
+          formData.append("file", pdfBlob, "facture.pdf"); // Append as Blob
+          
+          // Send to Discord
+          fetch('/api/send-to-discord', {
+            method: 'POST',
+            body: formData,
+          })
           .then((res) => {
             if (res.ok) {
               alert('✅ Facture envoyée à Discord avec succès !');
@@ -61,13 +61,17 @@ export default function InvoiceGenerator() {
             console.error('Erreur:', err);
             alert('❌ Une erreur est survenue.');
           });
+        } else {
+          console.error('Le fichier généré n\'est pas un Blob valide');
+          alert('❌ Impossible de générer un fichier valide');
+        }
       })
       .finally(() => {
-        // Restore the visibility of elements after the PDF generation
         noPrintElements.forEach((el) => (el.style.display = ""));
         printOnlyElements.forEach((el) => (el.style.display = "none"));
       });
   };
+  
   
 
   return (
