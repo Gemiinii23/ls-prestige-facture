@@ -2,7 +2,6 @@
 
 import { IncomingForm } from 'formidable';
 import fs from 'fs';
-import path from 'path';
 import fetch from 'node-fetch';
 
 export const config = {
