@@ -39,45 +39,31 @@ export default function InvoiceGenerator() {
       .from(invoiceRef.current)
       .outputPdf("blob")
       .then((pdfBlob) => {
-        // Log the type of pdfBlob
-        console.log('PDF Blob:', pdfBlob);
+        const formData = new FormData();
+        formData.append("file", pdfBlob, "facture.pdf");
   
-        // Ensure it's a Blob
-        if (pdfBlob instanceof Blob) {
-          console.log("Successfully received a Blob!");
-          
-          // Manually set the type and content-disposition (optional)
-          const formData = new FormData();
-          formData.append("file", pdfBlob, "facture.pdf");
-  
-          fetch('/api/send-to-discord', {
-            method: 'POST',
-            body: formData,
-            headers: {
-              'Content-Type': 'multipart/form-data', // Explicit content type for form data
+        fetch("/api/send-to-discord", {
+          method: "POST",
+          body: formData,  
+        })
+          .then((res) => {
+            if (res.ok) {
+              alert("✅ Facture envoyée à Discord avec succès !");
+            } else {
+              alert("❌ Échec de l'envoi vers Discord.");
             }
           })
-            .then((res) => {
-              if (res.ok) {
-                alert('✅ Facture envoyée à Discord avec succès !');
-              } else {
-                alert('❌ Échec de l\'envoi vers Discord.');
-              }
-            })
-            .catch((err) => {
-              console.error('Erreur:', err);
-              alert('❌ Une erreur est survenue.');
-            });
-        } else {
-          console.error('Le fichier généré n\'est pas un Blob valide');
-          alert('❌ Impossible de générer un fichier valide');
-        }
+          .catch((err) => {
+            console.error("Erreur:", err);
+            alert("❌ Une erreur est survenue.");
+          });
       })
       .finally(() => {
         noPrintElements.forEach((el) => (el.style.display = ""));
         printOnlyElements.forEach((el) => (el.style.display = "none"));
       });
   };
+  
   
   
   
