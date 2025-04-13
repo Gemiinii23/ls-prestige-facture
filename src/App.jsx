@@ -45,20 +45,20 @@ export default function InvoiceGenerator() {
       const formData = new FormData();
       formData.append("file", pdfBlob, "facture.pdf");
 
-      fetch(webhookUrl, {
-        method: "POST",
+      fetch('/api/send-to-discord', {
+        method: 'POST',
         body: formData,
       })
-        .then((response) => {
-        if (response.ok) {
-          alert("Facture envoyée avec succès !");
-        } else {
-          alert("Erreur lors de l'envoi de la facture.");
-        }
+        .then((res) => {
+          if (res.ok) {
+            alert('✅ Facture envoyée à Discord avec succès !');
+          } else {
+            alert('❌ Échec de l\'envoi vers Discord.');
+          }
         })
-        .catch((error) => {
-        console.error("Erreur:", error);
-        alert("Erreur lors de l'envoi de la facture.");
+        .catch((err) => {
+          console.error('Erreur:', err);
+          alert('❌ Une erreur est survenue.');
         });
       })
       .finally(() => {
