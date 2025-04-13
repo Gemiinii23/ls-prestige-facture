@@ -3,6 +3,7 @@
 import { IncomingForm } from 'formidable';
 import fs from 'fs';
 import fetch from 'node-fetch';
+import FormData from 'form-data';  // Import the correct form-data library
 
 export const config = {
   api: {
@@ -38,6 +39,7 @@ export default async function handler(req, res) {
       const response = await fetch(webhookUrl, {
         method: 'POST',
         body: formData,
+        headers: formData.getHeaders(), // Make sure the correct headers are set
       });
 
       if (!response.ok) {
