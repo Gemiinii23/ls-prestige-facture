@@ -1,8 +1,5 @@
 import React, { useState, useRef } from "react";
 import html2pdf from "html2pdf.js";
-require('dotenv').config(); 
-
-const webhookUrl = process.env.WEBHOOK_URL;
 
 export default function InvoiceGenerator() {
   const [services, setServices] = useState([

@@ -1,52 +1,48 @@
-import formidable from 'formidable';
-import fs from 'fs';
+// /api/send-to-discord.js
+import formidable from "formidable";
+import fs from "fs";
+import FormData from "form-data";
 
 export const config = {
   api: {
-    bodyParser: false, // Needed for file uploads
+    bodyParser: false,
   },
 };
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (req.method !== "POST") return res.status(405).send("Method Not Allowed");
 
-  const webhookUrl = process.env.REACT_APP_DISCORD_WEBHOOK_URL;
-
-  const form = new formidable.IncomingForm({ keepExtensions: true });
+  const form = formidable({ multiples: false });
 
   form.parse(req, async (err, fields, files) => {
     if (err) {
-      console.error('Form parse error:', err);
-      return res.status(500).json({ error: 'Failed to parse form' });
+      console.error("Formidable error:", err);
+      return res.status(500).json({ error: "Error parsing form data" });
     }
 
-    const pdfFile = files.file;
-    if (!pdfFile) {
-      return res.status(400).json({ error: 'No file provided' });
-    }
+    const file = files.file;
+    if (!file) return res.status(400).json({ error: "No file provided" });
 
     try {
-      const fileStream = fs.createReadStream(pdfFile.filepath);
+      const formData = new FormData();
+      formData.append("file", fs.createReadStream(file.filepath));
+      formData.append("payload_json", JSON.stringify({ content: "📎 Nouvelle facture en pièce jointe" }));
 
-      const discordRes = await fetch(webhookUrl, {
-        method: 'POST',
-        body: (() => {
-          const formData = new FormData();
-          formData.append('file', fileStream, 'facture.pdf');
-          return formData;
-        })(),
+      const response = await fetch(process.env.WEBHOOK_URL, {
+        method: "POST",
+        body: formData,
+        headers: formData.getHeaders(),
       });
 
-      if (!discordRes.ok) {
-        throw new Error(`Discord error: ${discordRes.status}`);
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text);
       }
 
       res.status(200).json({ success: true });
-    } catch (err) {
-      console.error('Discord upload failed:', err);
-      res.status(500).json({ error: 'Failed to send PDF to Discord' });
+    } catch (e) {
+      console.error("Sending to Discord failed:", e);
+      res.status(500).json({ error: "Failed to send to Discord" });
     }
   });
 }
