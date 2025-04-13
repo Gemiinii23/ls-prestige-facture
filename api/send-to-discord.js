@@ -28,7 +28,7 @@ export default async function handler(req, res) {
         throw new Error("File not found in request");
       }
 
-      const webhookUrl = process.env.WEBHOOK_URL;
+      const webhookUrl = process.env.REACT_APP_DISCORD_WEBHOOK_URL;
       const stream = fs.createReadStream(file.filepath);
 
       const formData = new FormData();
