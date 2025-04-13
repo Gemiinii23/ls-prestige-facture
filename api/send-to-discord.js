@@ -29,7 +29,6 @@ export default async function handler(req, res) {
       }
 
       const webhookUrl = process.env.REACT_APP_DISCORD_WEBHOOK_URL;
-      console.log("Webhook URL:", webhookUrl);
       const stream = fs.createReadStream(file.filepath);
 
       const formData = new FormData();
