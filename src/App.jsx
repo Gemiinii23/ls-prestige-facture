@@ -158,7 +158,7 @@ export default function InvoiceGenerator() {
           <div>
             <p style={{ fontWeight: "bold", color: "gray" }}>INFOS DE PAIEMENT</p>
             <p>Maze Bank</p>
-            <p>Nom du compte: Pacific Production</p>
+            <p>Nom du compte: LS PRESTIGE </p>
             <p>RIB: 47356</p>
           </div>
           <div style={{ textAlign: "center" }}>
