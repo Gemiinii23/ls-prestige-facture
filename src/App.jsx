@@ -159,18 +159,14 @@ export default function InvoiceGenerator() {
             <p>Maze Bank</p>
             <p>Nom du compte: LS PRESTIGE </p>
             <p>RIB: 47356</p>
-          </div>
-          <div style={{ width: "48%", textAlign: "left" }}>
-            <div style={{ fontWeight: "bold", color: "gray" }}>ADRESSE</div>
+
+            <p style={{ fontWeight: "bold", color: "gray" }}>ADRESSE</p>
             <textarea
               placeholder="Adresse"
               value={adresse}
               style={{ width: "100%", padding: "10px", marginBottom: "10px", border: "1px solid #ccc", minHeight: "60px", fontWeight: "bold" }}
               className="no-print"
             />
-            <div className="print-only" style={{ display: 'none', whiteSpace: 'pre-line', textAlign: 'left' }}>
-              {adresse}
-            </div>
           </div>
           <div style={{ textAlign: "center" }}>
             <p style={{ fontWeight: "bold", color: "gray" }}>SIGNATURE</p>
