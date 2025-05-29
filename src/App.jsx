@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import html2pdf from "html2pdf.js";
-import html2canvas from "html2canvas.js"; 
 
 export default function InvoiceGenerator() {
   const [services, setServices] = useState([
@@ -37,24 +36,19 @@ export default function InvoiceGenerator() {
     printOnlyElements.forEach((el) => (el.style.display = "block"));
   
     html2pdf()
-    .from(invoiceRef.current)
-    .outputPdf("blob")
-    .then((pdfBlob) => {
-      formData.append("file", pdfBlob, "facture.pdf");
-
-      return html2canvas(invoiceRef.current);
-    })
-    .then((canvas) => {
-      canvas.toBlob((blob) => {
-        formData.append("image", blob, "facture.png");
-
+      .from(invoiceRef.current)
+      .outputPdf("blob")
+      .then((pdfBlob) => {
+        const formData = new FormData();
+        formData.append("file", pdfBlob, "facture.pdf");
+  
         fetch("/api/send-to-discord", {
           method: "POST",
-          body: formData,
+          body: formData,  
         })
           .then((res) => {
             if (res.ok) {
-              alert("✅ Facture et image envoyées à Discord avec succès !");
+              alert("✅ Facture envoyée à Discord avec succès !");
             } else {
               alert("❌ Échec de l'envoi vers Discord.");
             }
@@ -62,13 +56,13 @@ export default function InvoiceGenerator() {
           .catch((err) => {
             console.error("Erreur:", err);
             alert("❌ Une erreur est survenue.");
-          })
-          .finally(() => {
-            noPrintElements.forEach((el) => (el.style.display = ""));
-            printOnlyElements.forEach((el) => (el.style.display = "none"));
           });
-      }, "image/png");
-    });
+      })
+      .finally(() => {
+        noPrintElements.forEach((el) => (el.style.display = ""));
+        printOnlyElements.forEach((el) => (el.style.display = "none"));
+      });
+  };
   
   
   
