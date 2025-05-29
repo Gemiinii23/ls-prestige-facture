@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import html2pdf from "html2pdf.js";
-import html2canvas from "html2canvas"; 
+import html2canvas from "html2canvas.js"; 
 
 export default function InvoiceGenerator() {
   const [services, setServices] = useState([
